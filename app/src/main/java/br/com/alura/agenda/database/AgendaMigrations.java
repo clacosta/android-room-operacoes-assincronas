@@ -116,7 +116,7 @@ class AgendaMigrations {
                     "`tipo` = ? ", new TipoTelefone[]{FIXO});
 
             database.execSQL("DROP TABLE `Aluno`");
-            
+
             database.execSQL("ALTER TABLE `Aluno_Novo` RENAME TO `Aluno`");
         }
     };
