@@ -8,12 +8,15 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.database.AgendaDatabase;
 import br.com.alura.agenda.database.dao.AlunoDAO;
 import br.com.alura.agenda.database.dao.TelefoneDAO;
 import br.com.alura.agenda.model.Aluno;
 import br.com.alura.agenda.model.Telefone;
+import br.com.alura.agenda.model.TipoTelefone;
 
 import static br.com.alura.agenda.model.TipoTelefone.*;
 import static br.com.alura.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
@@ -29,6 +32,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private AlunoDAO alunoDAO;
     private Aluno aluno;
     private TelefoneDAO telefoneDao;
+    private List<Telefone> telefonesDoAluno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +75,14 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(aluno.getNome());
-//        campoTelefoneFixo.setText(aluno.getTelefoneFixo());
-//        campoTelefoneCelular.setText(aluno.getTelefoneCelular());
+        telefonesDoAluno = telefoneDao.buscaTodosTelefonesDoAluno(aluno.getId());
+        for (Telefone telefone : telefonesDoAluno) {
+            if (telefone.getTipo() == FIXO) {
+                campoTelefoneFixo.setText(telefone.getNumero());
+            } else {
+                campoTelefoneCelular.setText(telefone.getNumero());
+            }
+        }
         campoEmail.setText(aluno.getEmail());
     }
 
@@ -80,6 +90,16 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         preencheAluno();
         if (aluno.temIdValido()) {
             alunoDAO.edita(aluno);
+            for (Telefone telefone : telefonesDoAluno) {
+                if (telefone.getTipo() == FIXO) {
+                    String numeroFixo = campoTelefoneFixo.getText().toString();
+                    telefone.setNumero(numeroFixo);
+                } else {
+                    String numeroCelular = campoTelefoneCelular.getText().toString();
+                    telefone.setNumero(numeroCelular);
+                }
+                telefoneDao.alualiza(telefonesDoAluno);
+            }
         } else {
             int alunoId = alunoDAO.salva(aluno).intValue();
             String numeroFixo = campoTelefoneFixo.getText().toString();
