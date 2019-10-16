@@ -2,7 +2,7 @@
 
 Curso de Android Room parte 2: Operações assíncronas
 
-01 - Suportando mais de um telefone
+01 - Suportando mais de um telefoneFixo
 
 02 - Implementando relacionamento entre entidades
 
