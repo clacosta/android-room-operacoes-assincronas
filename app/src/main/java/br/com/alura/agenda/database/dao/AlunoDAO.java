@@ -16,7 +16,7 @@ public interface AlunoDAO {
     @Insert
     void salva(Aluno aluno);
 
-    @Query("SELECT * FROM aluno")
+    @Query("SELECT * FROM Aluno")
     List<Aluno> todos();
 
     @Delete
