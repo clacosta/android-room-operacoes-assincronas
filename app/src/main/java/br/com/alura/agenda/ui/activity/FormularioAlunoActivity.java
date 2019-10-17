@@ -114,7 +114,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void salvaAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
         new SalvaAlunoTask(alunoDAO, aluno, telefoneFixo, telefoneCelular, telefoneDao,
-                this::finish);
+                this::finish).execute();
     }
 
     private void editaAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
